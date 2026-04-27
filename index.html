@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Radha Krishna Poshak | Laddu Gopal Dress</title>
+<title>Radha Krishna Collection</title>
 
 <style>
 body {margin:0;font-family:Arial;background:#f5f5f5;}
@@ -59,65 +59,7 @@ border-radius:20px;
 
 <div class="products" id="productList"></div>
 
-<script>
-let cart = 0;
-let number = "919876543210"; // 👈 अपना नंबर डालना
-
-function loadProducts(){
-let data = JSON.parse(localStorage.getItem("products")) || [];
-let html = "";
-
-data.forEach((p)=>{
-html += `
-<div class="card">
-<img src="${p.img}">
-<h3>${p.name}</h3>
-<p class="price">₹${p.price}</p>
-<button class="btn cart-btn" onclick="addCart()">Add to Cart</button>
-<button class="btn whatsapp-btn" onclick="order('${p.name}')">Order on WhatsApp</button>
-</div>
-`;
-});
-
-document.getElementById("productList").innerHTML = html;
-}
-
-function addCart(){
-cart++;
-document.getElementById("count").innerText = cart;
-}
-
-function order(name){
-let url = "https://wa.me/"+number+"?text=I want to order "+name;
-window.open(url);
-}
-
-loadProducts();
-</script>
 <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyCgYqzZOL7X6Z2nGcFGDGnR1NbrqLhi_Rg",
-    authDomain: "rkp-collection-store.firebaseapp.com",
-    projectId: "rkp-collection-store",
-    storageBucket: "rkp-collection-store.firebasestorage.app",
-    messagingSenderId: "983842117212",
-    appId: "1:983842117212:web:0c82b694b69db4b5a77899",
-    measurementId: "G-CDG9XVBW6H"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-</script>                                                                                              
-  <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
 
@@ -139,11 +81,14 @@ async function loadProducts() {
 
   querySnapshot.forEach((doc) => {
     const data = doc.data();
+
     html += `
-      <div style="border:1px solid #ccc; padding:10px; margin:10px;">
-        <img src="${data.image}" width="150"/>
+      <div class="card">
+        <img src="${data.image}">
         <h3>${data.name}</h3>
-        <p>₹${data.price}</p>
+        <p class="price">₹${data.price}</p>
+        <button class="btn cart-btn" onclick="addCart()">Add to Cart</button>
+        <button class="btn whatsapp-btn" onclick="order('${data.name}')">Order on WhatsApp</button>
       </div>
     `;
   });
@@ -151,7 +96,19 @@ async function loadProducts() {
   document.getElementById("productList").innerHTML = html;
 }
 
+window.addCart = function(){
+  let count = document.getElementById("count");
+  count.innerText = Number(count.innerText) + 1;
+}
+
+window.order = function(name){
+  let number = "919322151932";
+  let url = "https://wa.me/"+number+"?text=I want to order "+name;
+  window.open(url);
+}
+
 loadProducts();
 </script>
+
 </body>
 </html>
