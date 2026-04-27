@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel</title>
+
+<style>
+body {font-family:Arial;padding:20px;}
+input {width:100%;padding:10px;margin:5px 0;}
+button {padding:10px;width:100%;background:#ff5e62;color:white;border:none;margin-top:5px;}
+</style>
+</head>
+
+<body>
+
+<h2>Admin Login</h2>
+
+<input id="user" placeholder="Username">
+<input id="pass" type="password" placeholder="Password">
+<button onclick="login()">Login</button>
+
+<div id="panel" style="display:none;">
+
+<h2>Add Product</h2>
+
+<input id="name" placeholder="Product Name">
+<input id="price" placeholder="Price">
+<input id="img" placeholder="Image URL">
+
+<button onclick="addProduct()">Add Product</button>
+
+<h3>Products</h3>
+<div id="list"></div>
+
+</div>
+
+<script>
+
+let username="admin";
+let password="1234";
+
+function login(){
+let u=document.getElementById("user").value;
+let p=document.getElementById("pass").value;
+
+if(u===username && p===password){
+document.getElementById("panel").style.display="block";
+}else{
+alert("Wrong login");
+}
+}
+
+function addProduct(){
+let name=document.getElementById("name").value;
+let price=document.getElementById("price").value;
+let img=document.getElementById("img").value;
+
+let data=JSON.parse(localStorage.getItem("products"))||[];
+
+data.push({name,price,img});
+localStorage.setItem("products",JSON.stringify(data));
+
+alert("Added!");
+show();
+}
+
+function show(){
+let data=JSON.parse(localStorage.getItem("products"))||[];
+let html="";
+
+data.forEach((p,i)=>{
+html+=`
+<p>${p.name} - ₹${p.price}
+<button onclick="del(${i})">Delete</button></p>
+`;
+});
+
+document.getElementById("list").innerHTML=html;
+}
+
+function del(i){
+let data=JSON.parse(localStorage.getItem("products"));
+data.splice(i,1);
+localStorage.setItem("products",JSON.stringify(data));
+show();
+}
+
+show();
+
+</script>
+
+</body>
+</html>
