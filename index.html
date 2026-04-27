@@ -116,6 +116,42 @@ loadProducts();
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
+</script>                                                                                              
+  <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCgYqzZOL7X6Z2nGcFGDGnR1NbrqLhi_Rg",
+  authDomain: "rkp-collection-store.firebaseapp.com",
+  projectId: "rkp-collection-store",
+  storageBucket: "rkp-collection-store.firebasestorage.app",
+  messagingSenderId: "983842117212",
+  appId: "1:983842117212:web:0c82b694b69db4b5a77899"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+async function loadProducts() {
+  const querySnapshot = await getDocs(collection(db, "product"));
+  let html = "";
+
+  querySnapshot.forEach((doc) => {
+    const data = doc.data();
+    html += `
+      <div style="border:1px solid #ccc; padding:10px; margin:10px;">
+        <img src="${data.image}" width="150"/>
+        <h3>${data.name}</h3>
+        <p>₹${data.price}</p>
+      </div>
+    `;
+  });
+
+  document.getElementById("productList").innerHTML = html;
+}
+
+loadProducts();
 </script>
 </body>
 </html>
